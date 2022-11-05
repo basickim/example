@@ -148,9 +148,9 @@ async function initCall(){
 async function handleWelcomeSubmit(event){
     event.preventDefault();
     const input = welcomeForm.querySelector("input");
+    roomName = input.value;
     await initCall();
     socket.emit("join_room", input.value);
-    roomName = input.value;
     const h3 = room.querySelector("h3");
     h3.innerText = `ROOM: ${roomName}`;
     const h4 = room.querySelector("h4");
@@ -247,7 +247,8 @@ function handleAddStream(data){
     peerFace.srcObject = data.stream;
 }
 
-socket.on("bye", () => {
+socket.on("bye", (newCount) => {
+    roomcount = newCount;
     peerFace.srcObject = null;
 });
 

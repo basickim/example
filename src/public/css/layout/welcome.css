@@ -9,6 +9,12 @@ header h1{
     font-weight: 900;
 }
 
+#welcome .open{
+    margin: 0 auto;
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
 .welcome-form{
     margin: 2rem 0;
     text-align: center;

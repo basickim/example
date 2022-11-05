@@ -1,9 +1,9 @@
 ul.chats li{
     position: relative;
     list-style-type: none;
-    width: 38%;
+    width: 85%;
     height: 40px;
-    margin: 0 0 10px 60%;
+    margin: 0 0 10px 10%;
     padding: 10px;
     border-radius: 8px;
     background-color: #3b82f6;
@@ -22,7 +22,7 @@ ul.chats li::after{
 
 @media screen and (max-width: 768px){
     ul.chats li{
-        margin: 0 0 10px 30%;
-        width: 65%;
+        margin: 0 0 10px 10%;
+        width: 85%;
     }
 }
