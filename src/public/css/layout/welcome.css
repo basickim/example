@@ -10,9 +10,30 @@ header h1{
 }
 
 #welcome .open{
-    margin: 0 auto;
+    width: 100%;
+    max-width: 200px;
+    margin:auto;
     padding: 3rem 1rem;
     text-align: center;
+}
+
+#welcome .open h4{
+    width: 100%;
+    max-width: 200px;
+    margin: 0 0 20px 0;
+    padding: 3rem 1rem;
+    text-align: start;
+}
+
+#welcome .open ul.rooms{
+    width: 100%;
+    max-width: 200px;
+    margin: auto;
+}
+
+#welcome .open ul.rooms li{
+    text-align: start;
+    margin-top: 10px;
 }
 
 .welcome-form{
