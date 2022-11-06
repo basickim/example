@@ -8,6 +8,13 @@
     "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "devDependencies": {
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.19.3",
+    "@babel/node": "^7.19.1",
+    "@babel/preset-env": "^7.19.3",
+    "nodemon": "^2.0.20"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CBNU-sanhak/VI.git"
@@ -18,16 +25,9 @@
     "url": "https://github.com/CBNU-sanhak/VI/issues"
   },
   "homepage": "https://github.com/CBNU-sanhak/VI#readme",
-  "devDependencies": {
-    "@babel/cli": "^7.19.3",
-    "@babel/core": "^7.19.3",
-    "@babel/node": "^7.19.1",
-    "@babel/preset-env": "^7.19.3",
-    "nodemon": "^2.0.20"
-  },
   "dependencies": {
     "@socket.io/admin-ui": "^0.5.1",
-    "express": "^4.18.1",
+    "express": "^4.18.2",
     "pug": "^3.0.2",
     "socket.io": "^4.5.2",
     "ws": "^8.9.0"
