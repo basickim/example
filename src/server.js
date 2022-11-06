@@ -33,6 +33,13 @@ function publicRooms(){
     const publicRooms = [];
     rooms.forEach((_, key) => {
         if(sids.get(key) === undefined){
+
+            for(let i=0; i<publicRooms.length; i++)
+            {
+                if(key == publicRooms[i])
+                s=1;
+            }
+            if(s==0)
             publicRooms.push(key)
         }
     })
