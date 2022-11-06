@@ -2,10 +2,11 @@
   "name": "vi",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
   "license": "MIT",
+  "main": "server.js",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",
