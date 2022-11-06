@@ -17,7 +17,9 @@ app.get("/", (req, res) => res.sendFile(__dirname +'/views/index.html'));
 app.get('/home', (req,res)=>{
     res.render('home')
 })
-
+app.get('/home', (req,res)=>{
+    res.sendFile(__dirname +'/views/interview.html')
+})
 
 const httpServer = http.createServer(app);
 const wsServer = SocketIO(httpServer);
