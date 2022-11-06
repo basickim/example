@@ -8,13 +8,21 @@ app.set("view engine", "pug");
 app.set("views", __dirname + "/views");
 app.use("/public", express.static(__dirname + "/public"));
 
-app.get("/", (req, res) => res.render("home"));
-app.get("/*", (req, res) => res.redirect("/"));
+app.use('/images', express.static(__dirname + '/images'));
+
+app.get("/", (req, res) => res.sendFile(__dirname +'/views/index.html'));
+//app.get("/*", (req, res) => res.redirect("/"));   11.06 통합과정 주석처리
+
+//추가
+app.get('/home', (req,res)=>{
+    res.render('home')
+})
 
 
 const httpServer = http.createServer(app);
 const wsServer = SocketIO(httpServer);
 
+//
 function publicRooms(){
     const {
         sockets: {

@@ -159,8 +159,8 @@ async function handleWelcomeSubmit(event){
 }
 
 welcomeForm.addEventListener("submit", handleWelcomeSubmit);
-// Socket Code
 
+// Socket Code 소켓통신부분
 socket.on("welcome", async () => {
     myDataChannel = myPeerConnection.createDataChannel("chat");
     myDataChannel.addEventListener("message", (event) => {
@@ -215,8 +215,8 @@ socket.on("room_change", (rooms) => {
     });
 });
 
-// RTC Code
 
+// RTC Code
 function makeConnection(){
     myPeerConnection = new RTCPeerConnection({
         iceServers: [
