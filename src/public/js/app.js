@@ -135,6 +135,7 @@ cameraSelect.addEventListener("input", handleCameraChange);
 // Welcome Form (join a room)
 const welcome = document.getElementById("welcome");
 const welcomeForm = welcome.querySelector("form");
+const list = welcome.querySelector("ul");
 
 call.hidden = true;
 
@@ -158,7 +159,26 @@ async function handleWelcomeSubmit(event){
     input.value="";
 }
 
+async function handleWelcomeSubmit2(event){
+    event.preventDefault();
+    await initCall();
+    socket.emit("join_room", roomName);
+    const h3 = room.querySelector("h3");
+    h3.innerText = `ROOM: ${roomName}`;
+    const h4 = room.querySelector("h4");
+    h4.innerText = `NICKNAME: ${nickName}`;
+}
+
+
 welcomeForm.addEventListener("submit", handleWelcomeSubmit);
+
+//room 목록 addevemtlistener
+list.addEventListener("click", (e) =>{
+    if(e.target.tagName === "LI") {
+        roomName = e.target.innerText;
+        handleWelcomeSubmit2(e);
+    }
+});
 
 // Socket Code 소켓통신부분
 socket.on("welcome", async () => {
@@ -204,9 +224,12 @@ socket.on("new_message", (msg) => {
 
 socket.on("room_change", (rooms) => {
     const roomList = welcome.querySelector("ul");
-    roomList.innerHTML = "";
     if(rooms.length === 0){
         return;
+    }
+    while(roomList.hasChildNodes())
+    {
+        roomList.removeChild(roomList.firstChild);
     }
     rooms.forEach((room) => {
         const li = document.createElement("li");

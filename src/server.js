@@ -25,7 +25,7 @@ app.get('/interview', (req,res)=>{
 const httpServer = http.createServer(app);
 const wsServer = SocketIO(httpServer);
 
-//
+//현재 열린 방목록 전달함수
 function publicRooms(){
     const {
         sockets: {
@@ -34,6 +34,7 @@ function publicRooms(){
     } = wsServer;
 
     const publicRooms = [];
+    let s=0;
     rooms.forEach((_, key) => {
         if(sids.get(key) === undefined){
 
@@ -43,7 +44,10 @@ function publicRooms(){
                 s=1;
             }
             if(s==0)
+            {
             publicRooms.push(key)
+            }
+            s=0;
         }
     })
     return publicRooms;

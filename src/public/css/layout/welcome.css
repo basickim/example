@@ -36,6 +36,12 @@ header h1{
     margin-top: 10px;
 }
 
+#welcome .open ul.rooms li:hover{
+    text-align: start;
+    margin-top: 10px;
+    color: red;
+}
+
 .welcome-form{
     margin: 2rem 0;
     text-align: center;
