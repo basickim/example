@@ -21,6 +21,9 @@ app.get('/home', (req,res)=>{
 app.get('/interview', (req,res)=>{
     res.sendFile(__dirname +'/views/interview.html')
 })
+app.get('/login', (req,res)=>{
+    res.sendFile(__dirname +'/views/login.html')
+})
 
 const httpServer = http.createServer(app);
 const wsServer = SocketIO(httpServer);
