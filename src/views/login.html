@@ -1,36 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-    <a href="javascript:kakaoLogin();"><img src="images/kakao_login_medium_narrow.png"></a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="public/css/login.css" />
+  </head>
+  <body>
+    <div class="center">
+      <h1>Login</h1>
+      <form method="post">
+        <div class="txt_field">
+          <input type="text" required />
+          <span></span>
+          <label for="uname">Username</label>
+        </div>
+        <div class="txt_field">
+          <input type="password" required />
+          <span></span>
+          <label for="psw">Password</label>
+        </div>
+        <div class="pass">Forgot Password?</div>
+        <input type="submit" value="Login" />
+        <div class="signup_link">Not a member? <a href="#">Signup</a></div>
+        <div class="kakao_login">
+          <a href="javascript:kakaoLogin();"
+            ><img src="images/kakao_login_medium_narrow.png"
+          /></a>
+        </div>
+      </form>
+    </div>
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <script>
-        //님 허용값 받아와야됨
-        window.Kakao.init("26a173e6cd6f6254986f41a7719adae2");
+      //님 허용값 받아와야됨
+      window.Kakao.init("26a173e6cd6f6254986f41a7719adae2");
 
-        //로그인함수
-        function kakaoLogin(){
-            window.Kakao.Auth.login({
-                scope:'profile_nickname, account_email, gender',
-                success: function(authObj){
-                    //로그인 성공 시 콘솔 노출
-                    console.log(authObj);
-                    window.Kakao.API.request({
-                        url:'/v2/user/me',
-                        success: res=>{
-                            const kakao_account = res.kakao_account;
-                            console.log(kakao_account);
-                        }
-                    });
-                    
-                    //홈화면 리다이렉트
-                    window.location.href='/';
-                }
-            })
-        }
+      //로그인함수
+      function kakaoLogin() {
+        window.Kakao.Auth.login({
+          scope: "profile_nickname, account_email, gender",
+          success: function (authObj) {
+            //로그인 성공 시 콘솔 노출
+            console.log(authObj);
+            window.Kakao.API.request({
+              url: "/v2/user/me",
+              success: (res) => {
+                const kakao_account = res.kakao_account;
+                console.log(kakao_account);
+              },
+            });
+
+            //홈화면 리다이렉트
+            window.location.href = "/";
+          },
+        });
+      }
     </script>
-</body>
+  </body>
 </html>
