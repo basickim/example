@@ -28,9 +28,9 @@
     z-index: 10;
     position: absolute;
     width: 100vw;
-    height: 10vh;
+    height: 15vh;
     left: 0;
-    top: 95vh;
+    top: 85vh;
     background-color: darkseagreen;
     align-items: center;
     text-align: center;
@@ -41,7 +41,7 @@
 }
 #video{
     z-index: 10;
-    opacity: 0.5;
+    opacity: 10;
 }
 body{
     margin:0;
@@ -57,4 +57,38 @@ body{
 canvas{
     z-index:11;
     position:absolute;
+}
+.button:hover{color:#fff;}
+#playBtn{
+    display:block;
+    width:200px; 
+    height:40px; 
+    line-height:40px; 
+    border:1px #3399dd solid;;
+    position: absolute;
+    top: 78vh;
+    left: 50% - 40px;
+    background-color:#66aaff;  
+    text-align:center; 
+    cursor: pointer;  
+    color:#333; 
+    transition:all 0.9s, color 0.3;  
+
+    /* 
+    position: absolute;
+    top: 78vh;
+    left: 50% - 40px;
+    width : 50px;
+    height : 50px;
+    background-image: url("/images/playbtn.png");
+    background-size: cover;*/
+}
+.btn hover4:hover{color:#fff;}
+.hover4:hover{
+    box-shadow: 200px 0 0 0 rgba(0,0,0,0.25) inset, 
+               -200px 0 0 0 rgba(0,0,0,0.25) inset;
+}
+#playBtn:hover{
+    box-shadow: 200px 0 0 0 rgba(0,0,0,0.25) inset, 
+    -200px 0 0 0 rgba(0,0,0,0.25) inset;
 }

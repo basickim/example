@@ -1,6 +1,7 @@
 
 const video = document.getElementById('video');
 const ai = document.getElementById('ai');
+const playBtn = document.getElementById('playBtn');
 /*
 const $body = $('body');
 const $message = $('message');
@@ -25,7 +26,7 @@ const ai_feedback_expression = {        //인공지능이 말하는 듯한 메�
 };
 const timeout = 500;       //렌더링 타임아웃
 
-
+let state = 0;
 let hide = false;
 let inputSize = 224;
 let scoreThreshold = 0.5;
@@ -146,14 +147,18 @@ async function onPlay(){
     const detections = await faceapi.detectSingleFace(videoEl, options).withFaceLandmarks().withFaceExpressions();
     const canvas = $('#overlayCanvas').get(0);
 
+
+
     if(detections){ //제대로 가져왔으면
         const dims = faceapi.matchDimensions(canvas, videoEl, true);
         const resizedResult = faceapi.resizeResults(detections, dims);
         const minConfidence = 0.05;     //주어진 수치 사용한다?
         try{    //트라이 성공
-            const expression = get_top_expression(resizedResult.expressions);    //여러 감정 중 가장 높은 수치의 감정을 가져옴
-            //console.log(expression);
-            ai_talk(expression);      //추가 구현 과제
+            if(state == 1){
+                const expression = get_top_expression(resizedResult.expressions);    //여러 감정 중 가장 높은 수치의 감정을 가져옴
+                //console.log(expression);
+                ai_talk(expression);      //추가 구현 과제
+            }   
         }catch(e){
             console.error(e.message);
         }
@@ -164,15 +169,21 @@ async function onPlay(){
 
         
     }else{
-
+        ai.innerHTML = "화면 안으로 들어와주세요"; 
     }
 }
 
 video.addEventListener('play', async () => {      //비디오 켜지면 이벤트리스너 실행
-
     setInterval(async () => {
-      onPlay();
+        onPlay();
     }, timeout)
-
 });
 
+playBtn.addEventListener('click', async () => {      //비디오 켜지면 이벤트리스너 실행
+    state = 1;
+    /*
+    setInterval(async () => {
+        onPlay();
+      }, timeout)
+    */
+});
