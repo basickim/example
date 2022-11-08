@@ -1,4 +1,6 @@
 
+
+
 const video = document.getElementById('video');
 const ai = document.getElementById('ai');
 const playBtn = document.getElementById('playBtn');
@@ -24,7 +26,7 @@ const ai_feedback_expression = {        //인공지능이 말하는 듯한 메�
     surprised : ["놀라지마세요"],
     sad : ["표정이 경직되어 있어요!"]
 };
-const timeout = 500;       //렌더링 타임아웃
+const timeout = 1000;       //렌더링 타임아웃
 
 let state = 0;
 let hide = false;
@@ -175,15 +177,32 @@ async function onPlay(){
 
 video.addEventListener('play', async () => {      //비디오 켜지면 이벤트리스너 실행
     setInterval(async () => {
-        onPlay();
+        //onPlay();
     }, timeout)
 });
 
-playBtn.addEventListener('click', async () => {      //비디오 켜지면 이벤트리스너 실행
+playBtn.addEventListener('click', async () => {      //버튼 눌리면 이벤트리스너 실행
     state = 1;
-    /*
+    
     setInterval(async () => {
         onPlay();
       }, timeout)
-    */
+    
 });
+
+/*
+var gtts = require('node-gtts')('en');
+var path = require('path');
+var filepath = path.join(__dirname, 'i-love-you.wav');
+ 
+gtts.save(filepath, 'I love you', function() {
+  console.log('save done');
+})*/
+
+let gtts = require('node-gtts')('en')     //이게 문젠데 왜 안되는지 모르겟음 경로문제같은데
+var path = require('path')
+var filePath = path.join(__dirnamem, 'test.mp3');
+
+gtts.save(filePath, "Hello World My name is joonhee", function(){
+    console.log("savedone")
+})

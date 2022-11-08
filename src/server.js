@@ -10,7 +10,6 @@ app.use("/public", express.static(__dirname + "/public"));
 
 app.use('/images', express.static(__dirname + '/images'));
 app.use('/models', express.static(__dirname + '/models'));
-
 app.get("/", (req, res) => res.sendFile(__dirname +'/views/index.html'));
 //app.get("/*", (req, res) => res.redirect("/"));   11.06 통합과정 주석처리
 
