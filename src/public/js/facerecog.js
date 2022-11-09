@@ -1,9 +1,8 @@
-
-
-
 const video = document.getElementById('video');
 const ai = document.getElementById('ai');
 const playBtn = document.getElementById('playBtn');
+const message = document.getElementById('message');
+const message2 = document.getElementById('message2');
 /*
 const $body = $('body');
 const $message = $('message');
@@ -24,9 +23,12 @@ const ai_feedback_expression = {        //인공지능이 말하는 듯한 메�
     neutral : ["표정이 경직되어 있어요!","조금만 긴장을 푸세요"],
     happy: ["잘하고 있어요!","조금만 더 웃어봐요"],
     surprised : ["놀라지마세요"],
-    sad : ["표정이 경직되어 있어요!"]
+    sad : ["표정이 경직되어 있어요!"],
 };
-const timeout = 1000;       //렌더링 타임아웃
+const setting_feedback = {
+    setting : ["환경을 체크합니다. 화면에 얼굴이 제대로 인식되는지 확인해주세요", "화면 안으로 들어와주세요", "면접 시작"]
+}
+const timeout = 800;       //렌더링 타임아웃
 
 let state = 0;
 let hide = false;
@@ -36,6 +38,8 @@ let opacity = 0.1;
 
 let same_expression_count = 0;      //이거로 통과 실패 가리면 될듯
 let before_expression = "neutral";
+
+var time = 60;
 
 //모델 로드
 Promise.all([
@@ -99,11 +103,16 @@ function ai_talk(obj){
         if(value > 0.6){
             ai.innerHTML = ai_feedback_expression['sad']['0']; 
         }
-        else if(value <= 0.6 && value > 0.3){
-            ai.innerHTML = ai_feedback_expression['sad']['1']; 
-        }
     }
-    
+    else if(expression == 'surprised'){
+        ai.innerHTML = ai_feedback_expression['happy']['1']; 
+    }
+    else if(expression == 'angry'){
+        ai.innerHTML = ai_feedback_expression['happy']['1']; 
+    }
+    else{
+        ai.innerHTML = "화면 안으로 들어와주세요"; 
+    }
     /*
     if(before_expression != expression){
         reset();
@@ -150,44 +159,71 @@ async function onPlay(){
     const canvas = $('#overlayCanvas').get(0);
 
 
-
     if(detections){ //제대로 가져왔으면
         const dims = faceapi.matchDimensions(canvas, videoEl, true);
         const resizedResult = faceapi.resizeResults(detections, dims);
         const minConfidence = 0.05;     //주어진 수치 사용한다?
         try{    //트라이 성공
             if(state == 1){
+                message.innerHTML = setting_feedback['setting']['2']
                 const expression = get_top_expression(resizedResult.expressions);    //여러 감정 중 가장 높은 수치의 감정을 가져옴
                 //console.log(expression);
                 ai_talk(expression);      //추가 구현 과제
-            }   
+            }
+            else if(state == 2){
+                message.innerHTML = "면접 질문 중";
+                message2.innerHTML = "";
+                ai.innerHTML = "";
+                
+            }
+            else{
+                message.innerHTML = setting_feedback['setting']['0'];
+                message2.innerHTML = "인식 성공";
+                ai.innerHTML = "";
+                faceapi.draw.drawDetections(canvas, resizedResult);
+                faceapi.draw.drawFaceLandmarks(canvas, resizedResult);
+                faceapi.draw.drawFaceExpressions(canvas, resizedResult, minConfidence);
+            } 
         }catch(e){
             console.error(e.message);
         }
-
-        faceapi.draw.drawDetections(canvas, resizedResult);
-        faceapi.draw.drawFaceLandmarks(canvas, resizedResult);
-        faceapi.draw.drawFaceExpressions(canvas, resizedResult, minConfidence);
-
-        
+     
     }else{
-        ai.innerHTML = "화면 안으로 들어와주세요"; 
+        if(state == 0)message2.innerHTML = "화면 안으로 들어와주세요";
+        //else 
+        else if(state == 1) ai.innerHTML = "화면 안으로 들어와주세요"; 
     }
 }
 
 video.addEventListener('play', async () => {      //비디오 켜지면 이벤트리스너 실행
     setInterval(async () => {
-        //onPlay();
+        onPlay();
     }, timeout)
 });
 
 playBtn.addEventListener('click', async () => {      //버튼 눌리면 이벤트리스너 실행
-    state = 1;
-    
-    setInterval(async () => {
-        onPlay();
-      }, timeout)
-    
+    state = 2;      //질문상황 시작
+    var audio = new Audio('/speech/test.mp3');
+     audio.play();
+
+    audio.addEventListener("ended", function(){ 
+        state = 1;  //진행상황 시작
+        message2.innerHTML = "";
+        /*
+        var x = setInterval(function(){
+            
+            message2.innerHTML = time/1000;
+            time--;
+
+            if(time < 0){
+                clearInterval(x);
+                message2.innerHTML = "면접 종료";
+                state = 3;
+            }
+        })
+        */
+
+    });   
 });
 
 /*
@@ -199,10 +235,11 @@ gtts.save(filepath, 'I love you', function() {
   console.log('save done');
 })*/
 
+/*
 let gtts = require('node-gtts')('en')     //이게 문젠데 왜 안되는지 모르겟음 경로문제같은데
 var path = require('path')
 var filePath = path.join(__dirnamem, 'test.mp3');
 
 gtts.save(filePath, "Hello World My name is joonhee", function(){
     console.log("savedone")
-})
+})*/

@@ -1,4 +1,4 @@
-const video = document.getElementById('video')
+const video2 = document.getElementById('video')
 
 Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
@@ -9,19 +9,19 @@ Promise.all([
 
 function startVideo() {
   navigator.getUserMedia(
-    { video: {} },
-    stream => video.srcObject = stream,
+    { video2: {} },
+    stream => video2.srcObject = stream,
     err => console.error(err)
   )
 }
 
-video.addEventListener('play', () => {      //비디오 켜지면 이벤트리스너 실행
-  const canvas = faceapi.createCanvasFromMedia(video)
+video2.addEventListener('play', () => {      //비디오 켜지면 이벤트리스너 실행
+  const canvas = faceapi.createCanvasFromMedia(video2)
   document.body.append(canvas)
-  const displaySize = { width: video.width, height: video.height }
+  const displaySize = { width: video2.width, height: video2.height }
   faceapi.matchDimensions(canvas, displaySize)
   setInterval(async () => {
-    const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
+    const detections = await faceapi.detectAllFaces(video2, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
     const resizedDetections = faceapi.resizeResults(detections, displaySize)
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
     //faceapi.draw.drawDetections(canvas, resizedDetections)      //얼굴윤곽선
@@ -64,8 +64,3 @@ video.addEventListener('play', () => {      //비디오 켜지면 이벤트리�
     //console.log(resizedDetections)              //좌표값 찍혀있네
   }, 2000)  //딜레이 얼마나 걸지
 })
-
-function als(){
-  alert("tdasdsaest");
-}
-

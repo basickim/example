@@ -46,11 +46,10 @@
               success: (res) => {
                 const kakao_account = res.kakao_account;
                 console.log(kakao_account);
+                //홈화면 리다이렉트
+                window.location.href = "/";
               },
             });
-
-            //홈화면 리다이렉트
-            window.location.href = "/";
           },
         });
       }
