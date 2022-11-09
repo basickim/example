@@ -2,9 +2,9 @@ import http from "http";
 import SocketIO from "socket.io"
 import express from "express";
 
-const mysql = require('mysql');
-const dbconfig = require('./config/db.js');
-const connection =  mysql.createConnection(dbconfig);
+// const mysql = require('mysql');
+// const dbconfig = require('./config/db.js');
+// const connection =  mysql.createConnection(dbconfig);
 
 const app = express();
 
@@ -147,8 +147,8 @@ app.post('/join', (req, res) => {
         });
     res.sendFile(__dirname + "/views/login.html")
 })
-connection.query("select * from User", (error, rows, fields) => {
-    if (error) throw error;
-    console.log('User info is:', rows);
-});
+// connection.query("select * from User", (error, rows, fields) => {
+//     if (error) throw error;
+//     console.log('User info is:', rows);
+// });
 //connection.end();
