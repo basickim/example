@@ -10,18 +10,18 @@
       <h1>Login</h1>
       <form method="post">
         <div class="txt_field">
-          <input type="text" required />
+          <input name="userid" type="text" required />
           <span></span>
           <label for="uname">Username</label>
         </div>
         <div class="txt_field">
-          <input type="password" required />
+          <input name="userpw" type="password" required />
           <span></span>
           <label for="psw">Password</label>
         </div>
         <div class="pass">Forgot Password?</div>
         <input type="submit" value="Login" />
-        <div class="signup_link">Not a member? <a href="#">Signup</a></div>
+        <div class="signup_link">Not a member? <a href="join">Signup</a></div>
         <div class="kakao_login">
           <a href="javascript:kakaoLogin();"
             ><img src="images/kakao_login_medium_narrow.png"
