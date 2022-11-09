@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src='/public/js/annyang.js'></script>
+    
+  </head>
+  <body>
+    <header>
+      annyang STT API 테스트
+    </header>
+
+    <main>
+      <div class="btnComp">
+        <div class="container">
+          <button id="recBtn">마이크 시작</button>
+          <button id="stopBtn">마이크 끄기</button>
+        </div>
+      </div>
+  
+      <div class="sttResultComp">
+        <div class="container">
+          <div>STT 결과 목록...</div>
+          <ul id="sttResult"></ul>
+        </div>
+      </div>
+    </main>
+    <script src="/public/js/event.js"></script>
+  </body>
+</html>
