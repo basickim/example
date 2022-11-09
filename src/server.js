@@ -40,6 +40,9 @@ app.get('/login', (req,res)=>{
 app.get('/interview2', (req,res)=>{
     res.sendFile(__dirname +'/views/interview2.html')
 })
+app.get('/annyang', (req,res)=>{
+    res.sendFile(__dirname +'/views/annyang.html')
+})
 
 const httpServer = http.createServer(app);
 const wsServer = SocketIO(httpServer);
