@@ -78,7 +78,6 @@ function get_top_expression(obj){
 function ai_talk(obj){
     let value = obj["default_value"];
     let expression = obj["final_expression"];
-    //console.log(value, expression);   (형태형꺼 통합과정)
     //ai.innerHTML = '출력'; 
 
     //reset();
@@ -185,7 +184,7 @@ async function onPlay(){
                 faceapi.draw.drawFaceExpressions(canvas, resizedResult, minConfidence);
             } 
         }catch(e){
-            console.error(e.message);
+            //console.error(e.message);
         }
      
     }else{
