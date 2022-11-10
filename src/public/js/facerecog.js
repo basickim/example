@@ -78,7 +78,7 @@ function get_top_expression(obj){
 function ai_talk(obj){
     let value = obj["default_value"];
     let expression = obj["final_expression"];
-    console.log(value, expression);
+    //console.log(value, expression);
     //ai.innerHTML = '출력'; 
 
     //reset();
@@ -185,7 +185,7 @@ async function onPlay(){
                 faceapi.draw.drawFaceExpressions(canvas, resizedResult, minConfidence);
             } 
         }catch(e){
-            console.error(e.message);
+            //console.error(e.message);
         }
      
     }else{
