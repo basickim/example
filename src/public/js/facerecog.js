@@ -78,7 +78,7 @@ function get_top_expression(obj){
 function ai_talk(obj){
     let value = obj["default_value"];
     let expression = obj["final_expression"];
-    console.log(value, expression);
+    //console.log(value, expression);   (형태형꺼 통합과정)
     //ai.innerHTML = '출력'; 
 
     //reset();
@@ -201,30 +201,57 @@ video.addEventListener('play', async () => {      //비디오 켜지면 이벤�
     }, timeout)
 });
 
-playBtn.addEventListener('click', async () => {      //버튼 눌리면 이벤트리스너 실행
-    state = 2;      //질문상황 시작
-    var audio = new Audio('/speech/test.mp3');
-     audio.play();
+// 이벤트 영역
+const selectLang = "ko-KR"
+const text = "이 기업에 왜 지원했나요?"
 
-    audio.addEventListener("ended", function(){ 
+function speak(text, opt_prop) {
+    if (typeof SpeechSynthesisUtterance === "undefined" || typeof window.speechSynthesis === "undefined") {
+        alert("이 브라우저는 음성 합성을 지원하지 않습니다.")
+        return
+    }
+    
+    window.speechSynthesis.cancel() // 현재 읽고있다면 초기화
+
+    const prop = opt_prop || {}
+
+    const speechMsg = new SpeechSynthesisUtterance()
+    speechMsg.rate = prop.rate || 0.2 // 속도: 0.1 ~ 10      
+    speechMsg.pitch = prop.pitch || 1 // 음높이: 0 ~ 2
+    speechMsg.lang = prop.lang || "ko-KR"
+    speechMsg.text = text
+    
+    // SpeechSynthesisUtterance에 저장된 내용을 바탕으로 음성합성 실행
+    window.speechSynthesis.speak(speechMsg)
+
+    state = 1;  //진행상황 시작
+    message2.innerHTML = "";
+}
+
+
+playBtn.addEventListener('click', () => {      //버튼 눌리면 이벤트리스너 실행
+    state = 2;      //질문상황 시작
+    
+    speak(text, {
+        rate: 1,
+        pitch: 0.8,
+        lang: selectLang
+    })
+
+    //var audio = new Audio('/speech/test.mp3');
+     //audio.play();
+     
+    
+    /* speak.addEventListener("ended", function(){ 
         state = 1;  //진행상황 시작
         message2.innerHTML = "";
-        /*
-        var x = setInterval(function(){
-            
-            message2.innerHTML = time/1000;
-            time--;
-
-            if(time < 0){
-                clearInterval(x);
-                message2.innerHTML = "면접 종료";
-                state = 3;
-            }
-        })
-        */
-
-    });   
+    });  */  
 });
+
+
+
+
+
 
 /*
 var gtts = require('node-gtts')('en');
