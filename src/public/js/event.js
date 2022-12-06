@@ -50,7 +50,7 @@ playBtn.addEventListener('click', async () => {      //버튼 눌리면 이벤�
 });
 
 stopBtn.addEventListener('click', async () => {      //버튼 눌리면 이벤트리스너 실행
-  console.log(speech_sentence);
+  //console.log(speech_sentence);
 
   playBtn.style.display = "block";
   stopBtn.style.display = "none";

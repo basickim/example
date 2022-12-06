@@ -16,16 +16,34 @@ app.use("/speech", express.static(__dirname + "/speech"));
 app.use('/images', express.static(__dirname + '/images'));
 app.use('/models', express.static(__dirname + '/models'));
 
+
+
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
-
 //질문 제출 시 텍스트파일로 저장
 app.post('/submit', (req,res) => {
+    //var sentence = req.query.sentence;
     var sentence = JSON.stringify(req.body);
+    console.log(sentence);
 
     const fs = require('fs');
-    fs.writeFileSync("/test.txt", sentence);
+    fs.writeFileSync("test.txt", sentence);
+
+    res.sendFile(__dirname +'/views/test2.html')
+})
+
+
+//질문 제출 시 텍스트파일로 저장
+app.get('/submit2', (req,res) => {
+    var sentence = req.query.sentence;
+    //var sentence = JSON.stringify(req.body);
+    console.log(sentence);
+
+    const fs = require('fs');
+    fs.writeFileSync("test.txt", sentence);
+
+    res.sendFile(__dirname +'/views/test.html')
 })
 
 
@@ -33,9 +51,11 @@ app.post('/submit', (req,res) => {
 app.post('/convert', (req,res)=>{
     const fs = require('fs');
     var data = fs.readFileSync('test.txt', (err,data) => {});
+    //console(data);
     var dataParsed = JSON.parse(data);
-    console.log(dataParsed.sentence)
-
+    //var dataParsed = data;
+    //console.log(data)
+    
     //res.sendFile(__dirname +'/views/test2.html')
     res.writeHead(200, {'Content-Type': 'text/html;charset=UTF-8'});
     var openApiURL = "http://aiopen.etri.re.kr:8000/WiseNLU_spoken";
