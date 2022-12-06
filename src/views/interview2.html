@@ -16,7 +16,6 @@
     <script type="module" src="public/js/facerecog.js"></script>
     <script type="module" src="public/js/annyang.js"></script>
     <script type="module" src="public/js/event.js"></script>
-    <script type="module" src="public/js/annyang.js"></script>
     <link rel="stylesheet" href="public/css/interview.css">
 </head>
 <body>
@@ -27,6 +26,13 @@
     <canvas id="overlayCanvas"></canvas>
     <!--<div id="nav_btn"><button id="playBtn" type="button"></button></div>-->
     <button class="btn hover4" id = "playBtn"> Start </button>
+    <form method="POST" action="submit">
+        <button class="btn hover4" id = "stopBtn" style="display:none"> Stop </button>
+        <input type="text" id="sentence" name="sentence" style="display:block" value="dasdasdasd">
+    </form>
+        
+
+    
     <div id="ai"></div>
     
 </body>

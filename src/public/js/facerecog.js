@@ -78,9 +78,6 @@ function get_top_expression(obj){
 function ai_talk(obj){
     let value = obj["default_value"];
     let expression = obj["final_expression"];
-    //ai.innerHTML = '출력'; 
-
-    //reset();
         
     if(expression == 'happy'){
         if(value > 0.6){
@@ -110,36 +107,8 @@ function ai_talk(obj){
         ai.innerHTML = ai_feedback_expression['happy']['1']; 
     }
     else{
-        ai.innerHTML = "화면 안으로 들어와주세요"; 
+        //ai.innerHTML = "화면 안으로 들어와주세요"; 
     }
-    /*
-    if(before_expression != expression){
-        reset();
-        if(expression == 'neutral'){
-            $(".neutral").css('z-index', 1);
-            $(".happy").css('z-index', 1);
-            $(".surprised").css('z-index', 1);
-            $(".sad").css('z-index', 1);
-        }
-        else if(expression == 'happy'){
-            $(".neutral").css('z-index', 1);
-            $(".happy").css('z-index', 1);
-            $(".surprised").css('z-index', 1);
-            $(".sad").css('z-index', 1);
-        }
-        else if(expression == 'surprised'){
-            $(".neutral").css('z-index', 1);
-            $(".happy").css('z-index', 1);
-            $(".surprised").css('z-index', 1);
-            $(".sad").css('z-index', 1);
-        }
-        else if(expression == 'sad'){
-            $(".neutral").css('z-index', 1);
-            $(".happy").css('z-index', 1);
-            $(".surprised").css('z-index', 1);
-            $(".sad").css('z-index', 1);
-        }
-    }*/
 }
  
 //faceapi 타이니디텍터 옵션 가져오기
@@ -161,13 +130,13 @@ async function onPlay(){
     if(detections){ //제대로 가져왔으면
         const dims = faceapi.matchDimensions(canvas, videoEl, true);
         const resizedResult = faceapi.resizeResults(detections, dims);
-        const minConfidence = 0.05;     //주어진 수치 사용한다?
+        const minConfidence = 0.05;     //주어진 수치 사용한다
         try{    //트라이 성공
             if(state == 1){
                 message.innerHTML = setting_feedback['setting']['2']
                 const expression = get_top_expression(resizedResult.expressions);    //여러 감정 중 가장 높은 수치의 감정을 가져옴
                 //console.log(expression);
-                ai_talk(expression);      //추가 구현 과제
+                ai_talk(expression);      
             }
             else if(state == 2){
                 message.innerHTML = "면접 질문 중";
@@ -215,7 +184,7 @@ function speak(text, opt_prop) {
     const prop = opt_prop || {}
 
     const speechMsg = new SpeechSynthesisUtterance()
-    speechMsg.rate = prop.rate || 0.2 // 속도: 0.1 ~ 10      
+    speechMsg.rate = prop.rate || 10 // 속도: 0.1 ~ 10      
     speechMsg.pitch = prop.pitch || 1 // 음높이: 0 ~ 2
     speechMsg.lang = prop.lang || "ko-KR"
     speechMsg.text = text
@@ -229,10 +198,10 @@ function speak(text, opt_prop) {
 
 
 playBtn.addEventListener('click', () => {      //버튼 눌리면 이벤트리스너 실행
-    state = 2;      //질문상황 시작
+    state = 2;      //질문 출력
     
     speak(text, {
-        rate: 1,
+        rate: 0.62,
         pitch: 0.8,
         lang: selectLang
     })

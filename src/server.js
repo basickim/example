@@ -15,6 +15,71 @@ app.use("/public", express.static(__dirname + "/public"));
 app.use("/speech", express.static(__dirname + "/speech"));
 app.use('/images', express.static(__dirname + '/images'));
 app.use('/models', express.static(__dirname + '/models'));
+
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
+
+//질문 제출 시 텍스트파일로 저장
+app.post('/submit', (req,res) => {
+    var sentence = JSON.stringify(req.body);
+
+    const fs = require('fs');
+    fs.writeFileSync("/test.txt", sentence);
+})
+
+
+//api통신
+app.post('/convert', (req,res)=>{
+    const fs = require('fs');
+    var data = fs.readFileSync('test.txt', (err,data) => {});
+    var dataParsed = JSON.parse(data);
+    console.log(dataParsed.sentence)
+
+    //res.sendFile(__dirname +'/views/test2.html')
+    res.writeHead(200, {'Content-Type': 'text/html;charset=UTF-8'});
+    var openApiURL = "http://aiopen.etri.re.kr:8000/WiseNLU_spoken";
+ 
+    var access_key = '725aebde-323a-4964-a231-ccde25bae07e';
+    var analysisCode = 'ner';
+    var text = '';
+    
+    // 언어 분석 기술(문어)
+    text += dataParsed.sentence;
+    //text += "학교 가기 싫다.";
+    
+    var requestJson = {  
+        'argument': {
+            'text': text,
+            'analysis_code': analysisCode
+        }
+    };
+
+    var request = require('request');
+    var options = {
+        url: openApiURL,
+        body: JSON.stringify(requestJson),
+        headers: {'Content-Type':'application/json','Authorization':access_key}
+    };
+
+    request.post(options, function (error, response, body) {
+        res.write(body);
+        /* const searchData = body.filter(object => {
+            if (object.NAME.indexOf('NNG') > -1) {
+              return object;
+            }
+            return null;
+          });
+      
+        res.write(searchData); */
+    });    
+})
+
+//12.7 추가 테스트용
+app.get("/test2", (req, res) => res.sendFile(__dirname +'/views/test2.html'));
+
+
+
 //app.get("/", (req, res) => res.sendFile(__dirname +'/views/index.html'));
 app.get("/", (req, res) => res.sendFile(__dirname +'/views/test.html'));
 app.use(express.urlencoded({extended: true}));
