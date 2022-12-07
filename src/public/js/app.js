@@ -12,7 +12,7 @@ const msg_value = document.getElementById("a");
 const sendBtn = document.getElementById("b");
 
 let myStream;
-let muted = false;
+let muted = true;
 let cameraOff = false;
 let roomName;
 let nickName = "Anon";
@@ -98,7 +98,13 @@ async function getMedia(deviceId){
             deviceId ? cameraConstraints: initialConstraints
             );
         myFace.srcObject = myStream;
+        myFace.muted = true;
         if(!deviceId){
+            // mute default
+      myStream //
+      .getAudioTracks()
+      .forEach((track) => (track.enabled = false));
+
             await getCameras();
         }
     } catch(e) {
