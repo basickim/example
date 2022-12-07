@@ -47,55 +47,118 @@ app.get('/annyang', (req,res)=>{
 const httpServer = http.createServer(app);
 const wsServer = SocketIO(httpServer);
 
-//현재 열린 방목록 전달함수
-function publicRooms(){
-    const {
-        sockets: {
-            adapter: {sids, rooms},
-        },
-    } = wsServer;
+// //현재 열린 방목록 전달함수
+// function publicRooms(){
+//     const {
+//         sockets: {
+//             adapter: {sids, rooms},
+//         },
+//     } = wsServer;
     
-    const publicRooms = [];
-    let s=0;
-    rooms.forEach((_, key) => {
-        if(sids.get(key) === undefined){
+//     const publicRooms = [];
+//     let s=0;
+//     rooms.forEach((_, key) => {
+//         if(sids.get(key) === undefined){
             
-            for(let i=0; i<publicRooms.length; i++)
-            {
-                if(key == publicRooms[i])
-                s=1;
-            }
-            if(s==0)
-            {
-                publicRooms.push(key)
-            }
-            s=0;
-        }
-    })
-    return publicRooms;
+//             for(let i=0; i<publicRooms.length; i++)
+//             {
+//                 if(key == publicRooms[i])
+//                 s=1;
+//             }
+//             if(s==0)
+//             {
+//                 publicRooms.push(key)
+//             }
+//             s=0;
+//         }
+//     })
+//     return publicRooms;
+// }
+
+
+// function countRoom(roomName){
+//     return wsServer.sockets.adapter.rooms.get(roomName)?.size;
+// }
+
+function openRooms(){
+    let roomNum = roomObjArr.length;
+    const openrooms = [];
+    for(let i=0; i<roomNum; i++){
+        const name_count = [];
+        name_count.push(roomObjArr[i].roomName);
+        name_count.push(roomObjArr[i].currentNum);
+        openrooms.push(name_count);
+    }
+    return openrooms;
 }
 
-function countRoom(roomName){
-    return wsServer.sockets.adapter.rooms.get(roomName)?.size;
-}
+let roomObjArr = [
+    // {
+    //   roomName,
+    //   currentNum,
+    //   users: [
+    //     {
+    //       socketId,
+    //     },
+    //   ],
+    // },
+  ];
+  const MAXIMUM = 4;
+
 
 wsServer.on("connection", (socket) => {
+    let myRoomName = null;
+
     socket["nickname"] = "Anon";
-    wsServer.sockets.emit("room_change", publicRooms());
+    socket.emit("room_change", openRooms());
     socket.on("join_room", (roomName) => {
-        socket.join(roomName);
-        socket.to(roomName).emit("welcome");
-        wsServer.sockets.emit("room_change", publicRooms());
+        myRoomName = roomName;
+
+        let isRoomExist = false;
+        let targetRoomObj = null;
         
+        for(let i = 0; i<roomObjArr.length; ++i) {
+            if (roomObjArr[i].roomName === roomName) {
+                if(roomObjArr[i].currentNum >= MAXIMUM) {
+                    socket.emit("reject_join");
+                    ++roomObjArr[i].currentNum;
+                    return;
+                }
+
+                isRoomExist = true;
+                targetRoomObj = roomObjArr[i];
+                break;
+            }
+        }
+
+        //방 만들기
+        if (!isRoomExist) {
+            targetRoomObj = {
+                roomName,
+                currentNum: 0,
+                users: [],
+            };
+            roomObjArr.push(targetRoomObj);
+        }
+
+        targetRoomObj.users.push({
+            socketId: socket.id,
+        });
+        ++targetRoomObj.currentNum;
+
+        socket.join(roomName);
+        wsServer.sockets.emit("room_change", openRooms());
+        socket.emit("welcome", targetRoomObj.users);
+    
     });
-    socket.on("offer", (offer, roomName) => {
-        socket.to(roomName).emit("offer", offer);
+    socket.on("offer", (offer, remoteSocketId) => {
+        socket.to(remoteSocketId).emit("offer", offer, socket.id);
     });
-    socket.on("answer", (answer, roomName) => {
-        socket.to(roomName).emit("answer", answer);
+    socket.on("answer", (answer, remoteSocketId) => {
+        socket.to(remoteSocketId).emit("answer", answer, socket.id);
     });
-    socket.on("ice", (ice, roomName) => {
-        socket.to(roomName).emit("ice", ice);
+    socket.on("ice", (ice, remoteSocketId) => {
+        socket.to(remoteSocketId).emit("ice", ice, socket.id);
     });
     socket.on("new_message", (msg, room, done) => {
         socket.to(room).emit("new_message", `${socket.nickname}: ${msg}`);
@@ -103,10 +166,36 @@ wsServer.on("connection", (socket) => {
     });
     socket.on("nickname", (nickname) => (socket["nickname"] = nickname));
     socket.on("disconnecting", () => {
-        socket.rooms.forEach((room) => socket.to(room).emit("bye"));
+        socket.to(myRoomName).emit("leave_room", socket.id);
+
+        let isRoomEmpty = false;
+        for(let i = 0; i< roomObjArr.length; i++){
+            if(roomObjArr[i].roomName === myRoomName){
+            const newUsers = roomObjArr[i].users.filter(
+                (user) => user.socketId != socket.id
+            );
+            roomObjArr[i].users = newUsers;
+            --roomObjArr[i].currentNum;
+
+                if (roomObjArr[i].currentNum == 0) {
+                    isRoomEmpty = true;
+                }
+            }
+        }
+        if (isRoomEmpty) {
+            const newRoomObjArr = roomObjArr.filter(
+                (roomObj) => roomObj.currentNum != 0
+            );
+            roomObjArr = newRoomObjArr;
+        }
     });
     socket.on("disconnect", () => {
-        wsServer.sockets.emit("room_change", publicRooms());
+        if(roomObjArr.length == 0){
+            wsServer.sockets.emit("room_change2");
+        }
+        else{
+        wsServer.sockets.emit("room_change", openRooms());
+    }
     });
 });
 
