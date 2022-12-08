@@ -1,6 +1,8 @@
+
 const video = document.getElementById('video');
 const ai = document.getElementById('ai');
 const playBtn = document.getElementById('playBtn');
+const stopBtn = document.getElementById("stopBtn");
 const message = document.getElementById('message');
 const message2 = document.getElementById('message2');
 /*
@@ -116,6 +118,10 @@ function getFaceDetectorOptions(){
     return new faceapi.TinyFaceDetectorOptions({inputSize, scoreThreshold})
 }
 
+//왼쪽눈과 오른쪽 눈의 좌표들의 배열  이것을 이용해 그려야한다.
+const left_eye_list = [];
+const right_eye_list  = [];
+
 //시작함수
 async function onPlay(){
     const videoEl = $('video').get(0);      //비디오 가져오기(제이쿼리사용)
@@ -124,10 +130,30 @@ async function onPlay(){
     }
     const options = getFaceDetectorOptions();
     const detections = await faceapi.detectSingleFace(videoEl, options).withFaceLandmarks().withFaceExpressions();
+    const detectionWithLandmarks = await faceapi.detectSingleFace(videoEl,options).withFaceLandmarks();
     const canvas = $('#overlayCanvas').get(0);
 
 
     if(detections){ //제대로 가져왔으면
+
+         //눈좌표 평균 구하기위해서 얼굴인식에서 눈의 6개의 랜드마크 좌표를 가져와 평균을구한뒤 list에 넣어줬다.
+         const getLeftEye = detectionWithLandmarks.landmarks.getLeftEye();
+         const getRigtEye = detectionWithLandmarks.landmarks.getRightEye();
+             //console.log(getLeftEye.length);
+         let left_sumX = 0; let left_sumY = 0;let right_sumX = 0; let right_sumY = 0; 
+         for(let i = 0 ; i<6 ; i++){
+             left_sumX += getLeftEye[i]._x;
+             left_sumY += getLeftEye[i]._y;
+             right_sumX += getRigtEye[i]._x;
+             right_sumY += getRigtEye[i]._y;
+         }
+         const left_coordinate  = { x:Math.round(left_sumX/6), y:Math.round(left_sumY/6)};
+         const right_coordinate  = { x:Math.round(right_sumX/6), y:Math.round(right_sumY/6)};
+         left_eye_list.push(left_coordinate);
+         right_eye_list.push(right_coordinate);
+         console.log(left_eye_list);
+         console.log(right_eye_list);
+
         const dims = faceapi.matchDimensions(canvas, videoEl, true);
         const resizedResult = faceapi.resizeResults(detections, dims);
         const minConfidence = 0.05;     //주어진 수치 사용한다
@@ -217,8 +243,22 @@ playBtn.addEventListener('click', () => {      //버튼 눌리면 이벤트리�
 });
 
 
+/*
+stopBtn.addEventListener('click', async () => {      //버튼 눌리면 이벤트리스너 실행
+    //console.log(speech_sentence);
+    console.log(JSON.stringify(left_eye_list));
+    console.log(JSON.stringify(right_eye_list));
+    
+  });
+  */
 
+$('#myform').on('submit', function() {
 
+    // ...
+    $('input[name=left_eyes]').attr('value',JSON.stringify(left_eye_list));
+    $('input[name=right_eyes]').attr('value',JSON.stringify(right_eye_list));
+    return true;
+});
 
 
 /*

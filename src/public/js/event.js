@@ -1,3 +1,4 @@
+
 const playBtn = document.getElementById('playBtn');
 const stopBtn = document.getElementById("stopBtn");
 const sentence = document.getElementById("sentence");
@@ -36,6 +37,9 @@ function recBtnHandler() {
       }
     }
   };
+
+  
+
 }
 
 /* function stopBtnHandler() {
@@ -54,8 +58,7 @@ stopBtn.addEventListener('click', async () => {      //버튼 눌리면 이벤�
 
   playBtn.style.display = "block";
   stopBtn.style.display = "none";
-  
-  
+
   speech_sentence = "";
 });
 

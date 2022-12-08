@@ -24,11 +24,17 @@ app.use(express.urlencoded({extended: true}))
 //질문 제출 시 텍스트파일로 저장
 app.post('/submit', (req,res) => {
     //var sentence = req.query.sentence;
-    var sentence = JSON.stringify(req.body);
+    var sentence1 = req.body.sentence;
+    var left_eyes = (req.body.left_eyes);
+    var right_eyes = (req.body.right_eyes);
+    const obj ={sentence : sentence1};
+    var sentence = JSON.stringify(obj);
     console.log(sentence);
 
     const fs = require('fs');
     fs.writeFileSync("test.txt", sentence);
+    fs.writeFileSync("left_eyes.txt", left_eyes);
+    fs.writeFileSync("right_eyes.txt", right_eyes);
 
     res.sendFile(__dirname +'/views/test2.html')
 })
@@ -45,6 +51,24 @@ app.get('/submit2', (req,res) => {
 
     res.sendFile(__dirname +'/views/test.html')
 })
+
+
+
+app.get('/getEyearray',(req,res)=>{
+    const fs = require('fs');
+    var data1 = fs.readFileSync('right_eyes.txt', (err,data) => {});
+    var data2 = fs.readFileSync('left_eyes.txt', (err,data) => {});
+    //console(data);
+   
+    var data = { right: JSON.parse(data1), left: JSON.parse(data2)};
+    //console.log(data);
+    res.send(data);
+})
+
+app.get('/eyesresult', (req,res)=>{
+    res.render("eyeresult");
+})
+
 
 
 //api통신
@@ -128,6 +152,8 @@ app.get('/interview2', (req,res)=>{
 app.get('/annyang', (req,res)=>{
     res.sendFile(__dirname +'/views/annyang.html')
 })
+
+
 
 const httpServer = http.createServer(app);
 const wsServer = SocketIO(httpServer);
