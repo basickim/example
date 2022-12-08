@@ -1,39 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script defer type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      defer
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-2.1.1.min.js"
+    ></script>
+    <script
+      defer
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"
+    ></script>
 
-    <!-- <script defer type="text/javascript" src="./greensock/src/minified/TweenMax.min.js"></script>--> <!--애니메이션 때매 -->
+    <!-- <script defer type="text/javascript" src="./greensock/src/minified/TweenMax.min.js"></script>-->
+    <!--애니메이션 때매 -->
     <!-- <script defer src="uikit/js/uikit.min.js"></script> -->
 
-    <link rel="shortcut icon" href="#">
-    <script defer src = "public/js/face-api.min.js"></script>
-    <script defer src = "public/js/facerecog.js"></script>
+    <link rel="shortcut icon" href="#" />
+    <script defer src="public/js/face-api.min.js"></script>
+    <script defer src="public/js/facerecog.js"></script>
     <script type="module" src="public/js/facerecog.js"></script>
     <script type="module" src="public/js/annyang.js"></script>
     <script type="module" src="public/js/event.js"></script>
-    <link rel="stylesheet" href="public/css/interview.css">
-</head>
-<body>
+    <link rel="stylesheet" href="public/css/interview.css" />
+  </head>
+  <body>
     <div id="message"></div>
     <div id="message2"></div>
     <!--<div id="sentiment"></div>-->
-    <video id ="video" autoplay muted></video>
+    <video id="video" autoplay muted></video>
     <canvas id="overlayCanvas"></canvas>
     <!--<div id="nav_btn"><button id="playBtn" type="button"></button></div>-->
-    <button class="btn hover4" id = "playBtn"> Start </button>
-    <form method="post" action="submit">
-        <button class="btn hover4" id = "stopBtn" style="display:none"> Stop </button>
-        <input type="text" id="sentence" name="sentence" style="display:block" value="대답 문장">
+    <button class="btn hover4" id="playBtn">Start</button>
+    <form id="myform" method="post" action="submit">
+      <button class="btn hover4" id="stopBtn" style="display: none">
+        Stop
+      </button>
+      <input
+        type="text"
+        id="sentence"
+        name="sentence"
+        style="display: block"
+        value="대답 문장"
+      />
+      <input type="hidden" name="left_eyes" value="value" />
+      <input type="hidden" name="right_eyes" value="value" />
     </form>
-        
 
-    
     <div id="ai"></div>
-    
-</body>
+  </body>
 </html>
