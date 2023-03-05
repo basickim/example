@@ -1,7 +1,6 @@
 // import { createConnection } from "mysql";
 
-const socket = io();
-
+const socket = window.io();
 const myFace = document.getElementById("myFace");
 const muteBtn = document.getElementById("mute");
 const cameraBtn = document.getElementById("camera");

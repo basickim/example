@@ -54,7 +54,7 @@ Promise.all([
 
 //비디오 시작함수
 function startVideo() {
-    navigator.getUserMedia(
+    navigator.mediaDevices.getUserMedia(
         { video: {} },
         stream => video.srcObject = stream,
         err => console.error(err)
